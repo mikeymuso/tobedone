@@ -1,0 +1,566 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+$color-dark: #000000;
+$color-med: rgb(26,26,26);
+$color-light-med: rgb(51,51,51);
+$color-light: #99a8b2;
+$color-feature: #e6d5b8;
+$button-green: rgb(109, 170, 16);
+$notes-section: rgb(75,75,75);
+$light-font-color: rgb(241, 241, 241);
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #000;
+}
+
+ul {
+    list-style: none;
+}
+
+header {
+    display: grid;
+    place-content: center;
+    background: $color-dark;
+    color: white;
+    
+    h1 {
+        padding: .2em 0;
+        font-weight: 500;
+    }
+}
+
+#content {
+    height: 100vh;
+    width:  100vw;
+    min-width: 800px;
+}
+
+#interface-container {
+    display: grid;
+    width: 100%;
+    justify-items: stretch;
+    grid-template-columns: 1fr 1fr 2fr;
+    height: 93%;
+}
+
+#project-container,
+#notes-container {
+    border-right: 2px solid rgb(38,38,38);
+    background: $color-med;
+}
+
+#edit-window {
+    height: 100%;
+    background: $color-light-med;
+
+    #edit-window-controls {
+        background: $color-med;
+        height: 40px;
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        padding-right: 15px;
+        padding-left: 5px;
+        align-items: center;
+        flex: row nowrap;
+        border-bottom: 2px solid rgb(38,38,38);
+
+        #main-checkbox,
+        #main-delete {
+            height: 30px;
+            width: 30px;
+            cursor: pointer;
+        }
+
+        #main-checkbox:hover,
+        #main-delete:hover {
+            filter: brightness(1.2);
+        } 
+    }
+}
+
+#project-controls,
+#note-controls {
+    position: relative;
+    display: flex;
+    height: 40px;
+    background-color: $color-med;
+    padding-left: 0px;
+    overflow: hidden;
+    border-bottom: 2px solid rgb(38,38,38);
+
+
+    #new-project-text-hidden,
+    #new-note-text-hidden {
+        position: absolute;
+        right: left;
+        color: white;
+        font-size: .9em;
+        color: rgb(147, 230, 24);
+        opacity: 0;
+        transition: .2s;
+        transform: translate(-50px, 10px);
+        cursor: default;
+    }
+
+    #new-project-btn,
+    #new-note-btn {
+        display: grid;
+        place-content: center;
+        height: 40px;
+        width: 40px;
+        transition: .2s;
+        z-index: 1;
+        cursor: pointer;
+
+        img {
+            width: 30px;
+            height: 30px;
+        }
+    }
+
+    #new-project-btn:hover,
+    #new-note-btn:hover {
+        filter: brightness(1.2);
+    }
+}
+
+#projects-list,
+#notes-list {
+    background: $color-med;
+    overflow: scroll;
+    
+    ul {
+        display: grid;
+        justify-items: stretch;
+        gap: 2px;
+    }
+
+    li {
+        position: relative;
+        padding: 5px 10px;
+        background: $color-light;
+        transition: .2s;
+        cursor: pointer;
+        border: 1px solid $color-light;
+
+        .project-title,
+        .note-title {
+            font-size: 1em;
+        }
+
+        .project-date,
+        .note-publish-date,
+        .note-due-date {
+            font-size: .6em;
+        }
+
+        .note-due-date {
+            float: right;
+            padding-top: 12px;
+        }
+
+        .note-priority {
+            right: 10px;
+        }
+        
+        // NEED TO ADDRESS THIS ISSUE - BOTH IMAGES SHOULD BE IWTHIN DIV'S
+        .note-completed img, img {
+            position: absolute;
+            top: 10px;
+            right: 40px;
+            height: 20px;
+        }
+
+        .delete-project-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            height: 20px;
+            width: 20px;
+
+            img {
+                position: unset; // THIS NEEDS ADDRESSING
+            }
+        }
+    }
+
+    li:hover {
+        filter: brightness(1.2);
+        transition: .3s;
+    }
+
+    .active {
+        filter: brightness(1.7);
+        border: 1px solid white;
+    }
+
+}
+
+#edit-pane {
+    position: relative;
+
+    .edit-title {
+        font-size: 2em;
+        appearance: none;
+        border: none;
+        background: none;
+        color: $light-font-color;
+        margin: 20px 0 0 20px;
+        outline: none;
+        font-weight: bold;
+        font-family: inherit;
+    }
+
+    .edit-priority {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        color: $light-font-color;
+        text-align: center;
+        cursor: pointer;
+
+        p, img {
+            pointer-events: none;
+        }
+    }
+
+    .edit-date-created {
+        position: relative;
+        color: $light-font-color;
+        font-size: .7em;
+        margin-left: 24px;
+    }
+
+    .edit-due-date {
+        display: flex;
+        color: $light-font-color;
+        margin: 20px;
+
+        p {
+            font-size: 1em;
+            margin-right: 10px;
+        }
+
+        input {
+            width: 50%;
+            font-size: 1em;
+            appearance: none;
+            border: none;
+            background: none;
+            color: $light-font-color;
+            outline: none;
+            font-family: inherit;
+        }
+    }
+
+    .edit-notes {
+        margin: 20px 20px;
+        padding-top: 20px;
+        border-top: 2px solid rgb(94, 93, 93);
+
+
+        textarea {
+            width: 90%;
+            font-size: .9em;
+            appearance: none;
+            border: none;
+            background: none;
+            color: $light-font-color;
+            outline: none;
+            font-family: inherit;
+            resize: none;
+        }
+    }
+
+    .edit-priority:hover,
+    .edit-title {
+        filter: brightness(1.2);
+    } 
+}
+
+#edit-window {
+    position: relative;
+}
+
+#edit-last-update {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    width: 100%;
+    margin: 0 auto;
+    font-size: .8em;
+    color: $light-font-color;
+    opacity: .8;
+    padding: 10px;
+    text-align: right;
+    box-sizing: border-box;
+    border-top: 1px solid rgb(94, 93, 93);
+    
+}
+
+#priority-overlay {
+    position: absolute;
+    top: 140px;
+    right: 30px;
+    width: 180px;
+    background-color: rgb(51,51,51);
+    border: 1px solid $color-light;
+    border-radius: 4px;
+    overflow: hidden;
+
+    div {
+        display: grid;
+        grid-template-columns: 30% auto;
+        padding: 10px;
+        align-items: center;
+
+        p {
+            color: $light-font-color;
+            padding-left: 10px;
+        }
+    }
+
+    div:hover {
+        filter: brightness(1.2);
+        background-color: $color-med;
+    }
+}
+
+#new-note-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 400px;
+    height: 400px;
+    margin: 0 auto;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: $color-light-med;
+    transform: translate(-50%, -50%);
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.7);
+
+    #new-note-header {
+        height: 40px;
+        background: $color-med;
+        color: $light-font-color;
+        font-size: 25px;
+        text-align: center;
+    }
+
+    #new-note-top {
+        position: relative;
+        height: 130px;
+
+        #new-note-title {
+            font-size: 1.5em;
+            appearance: none;
+            border: none;
+            background: none;
+            color: $light-font-color;
+            margin: 20px 0 0 20px;
+            outline: none;
+            font-weight: bold;
+            font-family: inherit;
+        }
+
+        #new-note-dueDate,
+        #new-note-project {
+            display: flex;
+            color: $light-font-color;
+            margin: 10px 20px;
+
+            p {
+                font-size: .8em;
+                margin-right: 10px;
+                width: 30%;
+            }
+
+            input {
+                width: 50%;
+                font-size: .8em;
+                appearance: none;
+                border: none;
+                background: none;
+                color: $light-font-color;
+                outline: none;
+                font-family: inherit;
+            }
+
+            select {
+                float: right;
+                width: 40%;
+                height: 1.6em;
+                background-color: $color-light-med;
+                color: $light-font-color;
+                font-size: .8em;
+                outline: none;
+                border: none;
+                font-family: inherit;
+            }
+        }
+
+        #new-note-priority {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            color: $light-font-color;
+            text-align: center;
+            cursor: pointer;
+    
+            p, img {
+                pointer-events: none;
+            }
+        }
+    }
+
+    #new-note-mid {
+        height: 189px;
+        background: $notes-section;
+
+        textarea {
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            background: none;
+            border: none;
+            padding: 10px 14px;
+            font-family: inherit;
+            font-size: .9em;
+            outline: none;
+            resize: none;
+        }
+    }
+
+    #new-note-btm {
+        display: flex;
+        justify-content: flex-end;
+        overflow: hidden;
+        position: relative;
+
+        #save-note-btn {
+            display: grid;
+            place-content: center;
+            height: 40px;
+            width: 40px;
+            transition: .2s;
+            z-index: 1;
+            cursor: pointer;
+    
+            img {
+                width: 30px;
+                height: 30px;
+            }
+        }
+
+        #save-note-text-hidden {
+            position: absolute;
+            right: left;
+            color: $light-font-color;
+            font-size: .9em;
+            color: rgb(147, 230, 24);
+            opacity: 0;
+            transition: .2s;
+            transform: translate(50px, 10px);
+            cursor: default;
+        }
+
+        #new-note-alert {
+            position: absolute;
+            left: 10px;
+            color: rgb(250, 27, 27);
+            display: grid;
+            height: 100%;
+            place-content: center;
+        }
+    }
+}
+
+#new-project-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 400px;
+    height: 155px;
+    margin: 0 auto;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: $color-light-med;
+    transform: translate(-50%, -50%);
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.7);
+
+    #new-project-header {
+        height: 40px;
+        background: $color-med;
+        color: $light-font-color;
+        font-size: 25px;
+        text-align: center;
+    }
+
+    #new-project-top {
+        position: relative;
+        height: 70px;
+        border-bottom: 2px solid $notes-section;
+
+        #new-project-title {
+            font-size: 1.5em;
+            appearance: none;
+            border: none;
+            background: none;
+            color: $light-font-color;
+            margin: 20px 0 0 20px;
+            outline: none;
+            font-weight: bold;
+            font-family: inherit;
+        }
+    }
+
+    #new-project-btm {
+        display: flex;
+        justify-content: flex-end;
+        overflow: hidden;
+        position: relative;
+
+        #save-project-btn {
+            display: grid;
+            place-content: center;
+            height: 40px;
+            width: 40px;
+            transition: .2s;
+            z-index: 1;
+            cursor: pointer;
+    
+            img {
+                width: 30px;
+                height: 30px;
+            }
+        }
+
+        #save-project-text-hidden {
+            position: absolute;
+            right: left;
+            color: $light-font-color;
+            font-size: .9em;
+            color: rgb(147, 230, 24);
+            opacity: 0;
+            transition: .2s;
+            transform: translate(50px, 10px);
+            cursor: default;
+        }
+
+        #new-project-alert {
+            position: absolute;
+            left: 10px;
+            color: rgb(250, 27, 27);
+            display: grid;
+            height: 100%;
+            place-content: center;
+        }
+    }
+}
