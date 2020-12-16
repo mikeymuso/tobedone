@@ -165,6 +165,18 @@ const displayNewNoteOverlay = () => {
     }
     
     const addTopSection = () => {
+        const setProjectSelection = () => {
+            const activeProject = elements.projectsList.querySelector('.active');
+            
+            if (activeProject) {
+                const projectID = activeProject.id.split('-')[1];
+                const options = elements.newNoteProjectSelect.querySelectorAll('option');
+                options.forEach(option => {
+                    if (option.value === projectID) option.selected = true;
+                })
+            } 
+        }
+
         elements.newNoteTitle.placeholder = 'Title';
         elements.newNoteTitle.value = '';
     
@@ -173,6 +185,7 @@ const displayNewNoteOverlay = () => {
         
         elements.newNoteProject.innerHTML = `<p>Project: </p>`;
         elements.newNoteProjectSelect.innerHTML = getProjectSelectOptions();
+        setProjectSelection();
         elements.newNoteProject.append(elements.newNoteProjectSelect);
     
         elements.newNotePriorityText.innerHTML = `Priority`;
